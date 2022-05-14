@@ -8,6 +8,11 @@ function referToTags(selector) {
 	return document.querySelectorAll(selector)
 }
 
+function setTime() {
+	currentDate = new Date()
+	referToTag('.time').innerHTML = currentDate.getHours() + ':' + currentDate.getMinutes()
+}
+
 document.onmousemove = e => {
 	let biasX = window.innerWidth/2
 	let biasY = window.innerHeight/2
@@ -18,9 +23,9 @@ document.onmousemove = e => {
 }
 
 referToTag('.time').innerHTML = `${currentDate.getHours()}:${currentDate.getMinutes()}`
-referToTag('.date').innerHTML = `${currentDate.toLocaleString('default', {month: 'long'})} ${currentDate.getDay()}`
+referToTag('.date').innerHTML = `${currentDate.toLocaleString('default', {month: 'long'})} ${currentDate.getDate()}`
 referToTag('.day-ofz-week').innerHTML = `${currentDate.toLocaleString('default', {weekday: 'long'})}`
 referToTag('.about-day').style.width = `${referToTag('.date').clientWidth}px`
 setInterval(() => {referToTag('.about-day').style.width = `${referToTag('.date').clientWidth}px`}, 20)
 
-setInterval(() => {referToTag('.time').innerHTML = `${currentDate.getHours()}:${currentDate.getMinutes()}`}, 5000)
+setInterval(setTime, 1000)
