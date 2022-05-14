@@ -1,14 +1,14 @@
 let currentDate = new Date()
 
-function referToTag(selector) {
+let referToTag = (selector) => {
 	return document.querySelector(selector)
 }
 
-function referToTags(selector) {
+let referToTags = (selector) => {
 	return document.querySelectorAll(selector)
 }
 
-function setTime() {
+let setTime = () => {
 	currentDate = new Date()
 	referToTag('.time').innerHTML = currentDate.getHours() + ':' + currentDate.getMinutes()
 }
@@ -17,7 +17,7 @@ document.onmousemove = e => {
 	let biasX = window.innerWidth/2
 	let biasY = window.innerHeight/2
 	let textShadowParameters = `${(e.clientX - biasX)/biasX*2.5}px ${(e.clientY - biasY)/biasY*2.5}px 7.5px #0000001f`
-	let shadowParameters = `${(e.clientX - biasX)/biasX*2.5}px ${(e.clientY - biasY)/biasY*2.5}px 30px 5px #0000001f`
+	let shadowParameters = `${(e.clientX - biasX)/biasX*2.5}px ${(e.clientY - biasY)/biasY*2.5}px 30px 5px #0000001f, inset ${(e.clientX - biasX)/biasX*50}px ${(e.clientY - biasY)/biasY*50}px 256px 50px #5544330f`
 	referToTags('.shadow').forEach(item => {item.style['text-shadow'] = textShadowParameters})
 	referToTag('.right-side').style['box-shadow'] = shadowParameters
 }
