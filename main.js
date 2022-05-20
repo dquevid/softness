@@ -1,3 +1,4 @@
+// Visual
 let setShadow = (selector, props) => {
 	if (props.shadowType == 'textShadow') {
 		referToTag(selector).style['text-shadow'] = `${props.bias.x}px ${props.bias.y}px ${props.blur}px ${props.color}`
@@ -30,15 +31,15 @@ let currentDate = new Date()
 let shadow = {
 	textShadow: {
 		elements: ['.time', '.date', '.week-day', '.weather'],
-		config: {shadowType: 'textShadow', bias: {x: 5, y: 5}, blur: 15, color: '#5544330f'}
+		config: {shadowType: 'textShadow', bias: {x: 5, y: 5}, blur: 15, color: '#5544332f'}
 	},
 	boxShadow: {
-		elements: ['.right-side', '.desk-text'],
-		config: {bias: {x: 5, y: 5}, blur: 15, size: 0, color: '#5544330f'}
+		elements: ['.right-side', '.desk-text', '.image-card'],
+		config: {bias: {x: 5, y: 5}, blur: 15, size: 0, color: '#5544331f'}
 	},
 	innerShadow: {
-		elements: ['.right-side', '.desk-text'],
-		config: {shadowType: 'innerShadow', bias: {x: 15, y: 15}, blur: 64, size: 25, color: '#5544330f'}
+		elements: ['.right-side', '.desk-text', '.image-card'],
+		config: {shadowType: 'innerShadow', bias: {x: 15, y: 15}, blur: 64, size: 25, color: '#5544331f'}
 	}
 }
 
@@ -67,3 +68,9 @@ referToTag('.about-day').style.width = `${referToTag('.date').clientWidth}px`
 setInterval(() => {referToTag('.about-day').style.width = `${referToTag('.date').clientWidth}px`}, 200)
 
 setInterval(setTime, 1000)
+
+// Logic
+
+referToTag('.desk-text').onchange = () => {
+	console.log(referToTag('.desk-text').value)
+}
