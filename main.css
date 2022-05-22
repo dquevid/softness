@@ -12,6 +12,7 @@ body {
 }
 
 .main-container {
+	position: relative;
 	box-sizing: border-box;
 	display: grid;
 	grid-template-columns: 1fr 3fr;
@@ -59,7 +60,7 @@ body {
 }
 
 .shadow {
-	text-shadow: 0 0 7.5px #5544331f;
+	text-shadow: 5px 5px 7.5px #5544331f;
 
 	transition: all .1s;
 }
@@ -71,7 +72,7 @@ body {
 	padding: 25px;
 	background: #eeddcc;
 	border-radius: 30px;
-	box-shadow: 0 0 7.5px 0px #5544331f, inset 0 0 64px 25px #5544331f;
+	box-shadow: 5px 5px 7.5px 0px #5544331f, inset 0 0 64px 25px #5544330f;
 
 	transition: all .1s;
 }
@@ -89,7 +90,7 @@ body {
 	line-height: 1.25em;
 	outline: none;
 	background-image: repeating-linear-gradient(#00000000 0px, #00000000 18px, #5544333f 20px);
-	box-shadow: 0 0 7.5px 0px #5544331f, inset 0 0 64px 25px #5544331f;
+	box-shadow: 5px 5px 7.5px 0px #5544331f, inset 0 0 64px 25px #5544330f;
 }
 
 .pinned {
@@ -113,6 +114,81 @@ body {
 	border-radius: 2.5px;
 }
 
+.darker {
+	position: absolute;
+	top: 0;
+	content: '';
+	height: 100vh;
+	width: 100vw;
+	background: #000000dd;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.authorization {
+	display: flex;
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	top: 0;
+	font-size: 75px;
+	z-index: 1;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+}
+
+.container h1 {
+	color: #fff8f0;
+	font-size: 1em;
+	font-weight: 900;
+	line-height: 1em;
+}
+
+.container input {
+	display: block;
+	padding: 5px;
+	width: 95.55%;
+	outline: none;
+	border-radius: 5px;
+	border: 3px solid #fff8f0;
+	margin-bottom: 5px;
+	transition: .1s;
+}
+
+.container input:focus {
+	background: none;
+	border: 3px solid #fff8f0;
+	box-shadow: 0 0 15px 0 #fff, inset 0 0 15px 0 #fff;
+	text-shadow: 0 0 15px #fff;
+	color: #fff;
+}
+
+.submit {
+	height: 3em;
+	width: 100%;
+	margin-top: 5px;
+	background: none;
+	color: #fff8f0;
+	outline: none;
+	border-radius: 2em;
+	border: 2px solid #fff8f0;
+	transition: .1s;
+}
+
+.submit:hover, .submit:focus{
+	border: 3px solid #fff;
+	box-shadow: 0 0 15px 0 #fff, inset 0 0 15px 0 #fff;
+	text-shadow: 0 0 5px #fff;
+}
+
+.submit:active {
+	box-shadow: 0 0 5px 0 #fff, inset 0 0 5px #fff;
+}
+
 @media screen and (max-width: 1000px) {
 	.right-side {
 		grid-template-columns: none;
@@ -122,5 +198,9 @@ body {
 	.main-container {
 		grid-template-columns: none;
 		grid-template-rows: 1fr 4fr;
+	}
+
+	.authorization h1 {
+		display: none;
 	}
 }
