@@ -1,17 +1,4 @@
 // Visual
-let setShadow = (selector, props) => {
-	if (props.shadowType == 'textShadow') {
-		referToTag(selector).style['text-shadow'] = `${props.bias.x}px ${props.bias.y}px ${props.blur}px ${props.color}`
-		return
-	}
-	if (props.shadowType == 'innerShadow') {
-		referToTag(selector).style['box-shadow'] = `${referToTag(selector).style['box-shadow']}, inset ${props.bias.x}px ${props.bias.y}px ${props.blur}px ${props.size}px ${props.color}`
-		console.log(referToTag(selector).style['box-shadow'])
-		return
-	}
-	referToTag(selector).style['box-shadow'] = `${props.bias.x}px ${props.bias.y}px ${props.blur}px ${props.size}px ${props.color}`
-}
-
 let referToTag = (selector) => {
 	return document.querySelector(selector)
 }
