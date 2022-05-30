@@ -1,71 +1,64 @@
 // Visual
-let referToTag = (selector) => {
-	return document.querySelector(selector)
-}
-
-let setTime = () => {
-	currentDate = new Date()
-	referToTag('.time').innerHTML = currentDate.getHours() + ':' + currentDate.getMinutes()
-}
-
-let currentDate = new Date()
-let shadow = {
-	textShadow: {
-		elements: ['.time', '.date', '.week-day', '.weather'],
-		config: {shadowType: 'textShadow', bias: {x: 5, y: 5}, blur: 7.5, color: '#5544333f'}
+const view = {
+	getTag: selector => {return document.querySelector(selector)},
+	getTags: selector => {return document.querySelectorAll(selector)},
+	updateTheDate: () => {
+		const currentDate = new Date
+		view.getTag('.time').innerHTML = `${currentDate.getHours()}:${currentDate.getMinutes()}`
+		view.getTag('.date').innerHTML = `${currentDate.toLocaleString('en-US', {month: 'long'})} ${currentDate.getDate()}`
+		view.getTag('.week-day').innerHTML = `${currentDate.toLocaleString('en-US', {weekday: 'long'})}`
 	},
-	boxShadow: {
-		elements: ['.right-side', '.desk-text', '.image-card'],
-		config: {bias: {x: 5, y: 5}, blur: 15, size: 0, color: '#5544332f'}
-	},
-	innerShadow: {
-		elements: ['.right-side', '.desk-text', '.image-card'],
-		config: {shadowType: 'innerShadow', bias: {x: 15, y: 15}, blur: 64, size: 25, color: '#5544331f'}
+	theme: {
+		themeConfigs: {
+			'LIGHT': {
+				themeName: 'LIGHT',
+				appBackground: '#fff8f0',
+				textColor: '#ccbbaa',
+				deskColor: '#eeddcc',
+				deskTextareaBackground: 'repeating-linear-gradient(#fff 0px, #fff8f0 1em, #5544333f 1.25em)',
+				deskTextColor: '#554433',
+				textShadowConfig: '2.5px 2.5px 15px #0000001f',
+				boxShadowConfig: '0px 0px 30px 0 #0000001f',
+				antiAccent: '#1a1c1f'
+			},
+			'DARK': {
+				themeName: 'DARK',
+				appBackground: '#1a1c1f',
+				textColor: '#506070',
+				deskColor: '#506070',
+				deskTextareaBackground: 'repeating-linear-gradient(#fff 0px, #f0f8ff 1em, #3344553f 1.25em)',
+				deskTextColor: '#334455',
+				textShadowConfig: '2.5px 2.5px 15px #ffffff1f',
+				boxShadowConfig: '0px 0px 30px 0 #ffffff3f',
+				antiAccent: '#fff8f0'
+			}
+		},
+		currentTheme: 'LIGHT',
+		changeTheme: (theme) => {
+			view.theme.currentTheme = theme.themeName
+			view.getTags('.shadow').forEach(item => {
+				item.style.color = theme.textColor
+				item.style.textShadow = theme.textShadowConfig
+			})
+			view.getTag('body').style.background = theme.appBackground
+			view.getTag('.desk').style.background = theme.deskColor
+			view.getTag('.desk').style.boxShadow = theme.boxShadowConfig
+			view.getTag('.desk-textarea').style.backgroundImage = theme.deskTextareaBackground
+			view.getTag('.desk-textarea').style.boxShadow = theme.boxShadowConfig
+			view.getTag('.desk-textarea').style.color = theme.deskTextColor
+		}
 	}
 }
 
-// document.onmousemove = e => {
-// 	let bias = {x: (e.clientX - window.innerWidth/2)/(window.innerWidth/2), y: (e.clientY - window.innerHeight/2)/(window.innerHeight/2)}
-// 	let boxShadowConfig = JSON.parse(JSON.stringify(shadow.boxShadow.config))
-// 	let textShadowConfig = JSON.parse(JSON.stringify(shadow.textShadow.config))
-// 	let innerShadowConfig = JSON.parse(JSON.stringify(shadow.innerShadow.config))
-// 	textShadowConfig.bias.x *= -bias.x
-// 	textShadowConfig.bias.y *= -bias.y
-// 	boxShadowConfig.bias.x *= -bias.x
-// 	boxShadowConfig.bias.y *= -bias.y
-// 	innerShadowConfig.bias.x *= -bias.x
-// 	innerShadowConfig.bias.y *= -bias.y
-// 	shadow.textShadow.elements.forEach(i => {setShadow(i, textShadowConfig)})
-// 	shadow.boxShadow.elements.forEach(i => {setShadow(i, boxShadowConfig)})
-// 	shadow.innerShadow.elements.forEach(i => {setShadow(i, innerShadowConfig)})
-// }
+setInterval(view.updateTheDate, 200)
 
-referToTag('.time').innerHTML = `${currentDate.getHours()}:${currentDate.getMinutes()}`
-referToTag('.date').innerHTML = `${currentDate.toLocaleString('en-US', {month: 'long'})} ${currentDate.getDate()}`
-referToTag('.week-day').innerHTML = `${currentDate.toLocaleString('en-US', {weekday: 'long'})}`
-referToTag('.about-day').style.width = `${referToTag('.date').clientWidth}px`
-setInterval(() => {referToTag('.about-day').style.width = `${referToTag('.date').clientWidth}px`}, 200)
+view.getTag('.general-info').onclick = () => {
+	if (view.theme.currentTheme == 'LIGHT') {
+		view.theme.changeTheme(view.theme.themeConfigs['DARK'])
+		return
+	}
 
-setInterval(setTime, 1000)
-
-// Logic
-referToTag('.desk-text').onchange = () => {
-	console.log(referToTag('.desk-text').value)
+	view.theme.changeTheme(view.theme.themeConfigs['LIGHT'])
 }
 
-referToTag('.submit').onclick = () => {
-	const loginfo = {email: referToTag('.email').value, pass: referToTag('.password').value}
-	if (loginfo.email == '' | loginfo.password == '') return
-	const APIKey = 'AIzaSyDNz8AQfMbhQy1-MTmpygFJggNhetKEE8k'
-	fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${APIKey}`, {
-		method: 'POST',
-		body: JSON.stringify({
-			email: loginfo.email, password: loginfo.pass, returnSecureToken: true
-		}),
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	})
-	.then(response => response.json())
-	.then(data => console.log(data))
-}
+view.theme.changeTheme(view.theme.themeConfigs['LIGHT'])
