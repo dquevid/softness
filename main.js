@@ -62,3 +62,13 @@ view.getTag('.general-info').onclick = () => {
 }
 
 view.theme.changeTheme(view.theme.themeConfigs['LIGHT'])
+
+view.getTag('body').innerHTML += `
+<div class="authorization">
+	<div class="container">
+		<input class="auth-input username" type="text" placeholder="Username">
+		<input class="auth-input password" type="password" placeholder="Password">
+		<button class="submit">Log in</button>
+	</div>
+</div>
+`
