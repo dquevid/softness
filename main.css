@@ -136,7 +136,14 @@ body {
 	transform: scale(1.1);
 }
 
-.submit {
+.auth-fields {
+	display: flex;
+	flex-direction: column;
+	gap: .5em;
+	position: relative;
+}
+
+.auth-btn {
 	height: 2.5em;
 	width: 10em;
 	border-radius: 2em;
@@ -148,27 +155,20 @@ body {
 	font-size: max(16px, min(24px, 2vh));
 }
 
-.submit:focus {
+.auth-btn:focus {
 	background: #eeddcc;
 	color: #554433;
 }
 
-.submit:active {
+.auth-btn:active {
 	background: none; color: #eeddcc;
 	border: 2px solid #eeddcc;
 	transform: scale(.9);
 }
 
-@keyframes loading {
-	0% {
-		background-position: -100px;
-	}
-	50% {
-		background-position: 100px;
-	}
-	100% {
-		background-position: -100px;
-	}
+.sign-in {
+	font-size: max(12px, min(20px, 1vh));
+	background: none;
 }
 
 .log-out {
@@ -182,7 +182,7 @@ body {
 	color: #eeddcc;
 	font-weight: 900;
 	cursor: pointer;
-	font-size: 12px;
+	font-size: max(12px, min(24px, 2vw));
 	user-select: none;
 }
 
@@ -196,6 +196,21 @@ body {
 	background: #554433;
 	border-color: #554433;
 	color: #eeddcc
+}
+
+.hint {
+	background: #eeddcc;
+	position: absolute;
+	display: flex;
+	left: 115%;
+	width: 25vw;
+	height: 100%;
+	font-size: 12px;
+	border-radius: .5em;
+	padding: 2em;
+	box-sizing: border-box;
+	opacity: 0;
+	align-items: center;
 }
 
 @media screen and (max-width: 1000px) {

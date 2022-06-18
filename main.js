@@ -66,10 +66,13 @@ view.theme.changeTheme(view.theme.themeConfigs['LIGHT'])
 view.getTag('body').innerHTML += `
 <div class="authorization">
 	<div class="container">
-		<input class="auth-input username" type="text" placeholder="Username">
-		<input class="auth-input password" type="password" placeholder="Password">
-		<button class="submit">Log in</button>
-		<button class="go-to-regisration">registration</button>
+		<div class="auth-fields">
+			<input class="auth-input username" type="text" placeholder="Username">
+			<input class="auth-input password" type="password" placeholder="Password">
+			<div class="hint">Some text</div>
+		</div>
+		<button class="auth-btn log-in">Log in</button>
+		<button class="auth-btn sign-in">Registration</button>
 	</div>
 </div>`
 
@@ -95,11 +98,7 @@ fetch(URL+'user/', {headers: {'Authorization': `Bearer ${token}`}})
 	view.getTag('.desk-textarea').value = res.note
 })
 
-view.getTag('.submit').onclick = () => {
-	const username = view.getTag('.username').value
-	const password = view.getTag('.password').value
-
-	const body = {username, password}
+const logIn = (body) => {
 	sendRequest('POST', URL+'login/', {'Content-Type': 'application/json'}, body)
 	.then(res => res.json())
 	.then(res => {
@@ -116,8 +115,40 @@ view.getTag('.submit').onclick = () => {
 	})
 }
 
+view.getTag('.log-in').onclick = () => {
+	const username = view.getTag('.username').value
+	const password = view.getTag('.password').value
+
+	if (username.isEmpty || password.isEmpty || password.length < 4 || password.length > 16) {
+		view.getTag('.hint').innerHTML = 'Fields must be filled in. Your password length must be more then 4 and less then 16 characters'
+		view.getTag('.hint').style.opacity = 1
+		return
+	}
+
+	logIn({username, password})
+}
+
 view.getTag('.log-out').onclick = () => {
 	view.getTag('.authorization').style.display = 'flex'
+}
+
+view.getTag('.sign-in').onclick = () => {
+	const username = view.getTag('.username').value
+	const password = view.getTag('.password').value
+
+	if (username.isEmpty || password.isEmpty || password.length < 4 || password.length > 16) {
+		view.getTag('.hint').innerHTML = 'Fields must be filled in. Your password length must be more then 4 and less then 16 characters'
+		view.getTag('.hint').style.opacity = 1
+		return
+	}
+
+	const body = {username, password}
+	sendRequest('POST', URL+'signin/', {'Content-Type': 'application/json'}, body)
+	.then(res => {logIn(username, password)})
+}
+
+view.getTag('.auth-input').onfocus = () => {
+	view.getTag('.hint').style.opacity = 0
 }
 
 view.getTag('.desk-textarea').onchange = (e) => {
