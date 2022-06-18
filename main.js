@@ -50,10 +50,10 @@ const view = {
 	}
 }
 
-setInterval(view.updateTheDate, 200)
+setInterval(view.updateTheDate, 500)
 
 view.getTag('.general-info').onclick = () => {
-	if (view.theme.currentTheme == 'LIGHT') {
+	if (view.theme.currentTheme === 'LIGHT') {
 		view.theme.changeTheme(view.theme.themeConfigs['DARK'])
 		return
 	}
@@ -69,6 +69,58 @@ view.getTag('body').innerHTML += `
 		<input class="auth-input username" type="text" placeholder="Username">
 		<input class="auth-input password" type="password" placeholder="Password">
 		<button class="submit">Log in</button>
+		<button class="go-to-regisration">registration</button>
 	</div>
-</div>
-`
+</div>`
+
+if (localStorage.getItem('authToken')) {
+	view.getTag('.authorization').style.display = 'none'
+}
+
+const URL = 'http://localhost:5000/'
+const sendRequest = (method, url, headers = {}, body = null) => {
+	return fetch(url, {
+		method,
+		body: JSON.stringify(body),
+		headers
+	})
+}
+let token = ''
+
+view.getTag('.authorization').style.display = 'none'
+token = localStorage.getItem('authToken')
+fetch(URL+'user/', {headers: {'Authorization': `Bearer ${token}`}})
+.then(res => res.json())
+.then(res => {
+	view.getTag('.desk-textarea').value = res.note
+})
+
+view.getTag('.submit').onclick = () => {
+	const username = view.getTag('.username').value
+	const password = view.getTag('.password').value
+
+	const body = {username, password}
+	sendRequest('POST', URL+'login/', {'Content-Type': 'application/json'}, body)
+	.then(res => res.json())
+	.then(res => {
+		token = res.token
+		localStorage.setItem('authToken', token)
+		fetch(URL+'user/', {headers: {'Authorization': `Bearer ${token}`}})
+		.then(res => res.json())
+		.then(res => {
+			view.getTag('.desk-textarea').value = res.note
+			view.getTag('.authorization').style.display = 'none'
+			view.getTag('.username').value = ''
+			view.getTag('.password').value = ''
+		})
+	})
+}
+
+view.getTag('.log-out').onclick = () => {
+	view.getTag('.authorization').style.display = 'flex'
+}
+
+view.getTag('.desk-textarea').onchange = (e) => {
+	const body = e.srcElement.value
+	sendRequest('POST', URL+'note/', {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}, {note: body})
+}

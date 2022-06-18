@@ -122,13 +122,14 @@ body {
 
 .auth-input {
 	height: 2em;
-	padding: 10px 25px;
+	padding: .5em 1.5em;
 	border-radius: 2em;
 	outline: none;
 	border: none;
 	background: #eeddcc;
 	color: #554433;
 	font-weight: 700;
+	font-size: max(16px, min(32px, 3vh));
 }
 
 .auth-input:focus {
@@ -143,19 +144,58 @@ body {
 	border: none;
 	background: #554433;
 	color: #eeddcc;
+	cursor: pointer;
+	font-size: max(16px, min(24px, 2vh));
 }
 
 .submit:focus {
 	background: #eeddcc;
 	color: #554433;
-	transform: scale(1.1);
-
-	transition: .1s;
 }
 
 .submit:active {
 	background: none; color: #eeddcc;
 	border: 2px solid #eeddcc;
+	transform: scale(.9);
+}
+
+@keyframes loading {
+	0% {
+		background-position: -100px;
+	}
+	50% {
+		background-position: 100px;
+	}
+	100% {
+		background-position: -100px;
+	}
+}
+
+.log-out {
+	display: flex;
+	margin: 25px;
+	padding: 1em;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 1.25em;
+	color: #eeddcc;
+	font-weight: 900;
+	cursor: pointer;
+	font-size: 12px;
+	user-select: none;
+}
+
+.log-out:hover {
+	background: #eeddcc;
+	color: #fff8f0;
+}
+
+.log-out:active {
+	transform: scale(0.9);
+	background: #554433;
+	border-color: #554433;
+	color: #eeddcc
 }
 
 @media screen and (max-width: 1000px) {
