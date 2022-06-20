@@ -102,22 +102,32 @@ const logIn = (body) => {
 	sendRequest('POST', URL+'login/', {'Content-Type': 'application/json'}, body)
 	.then(res => {
 		if (res.status == 404) {
-			console.log('404')
 			view.getTag('.hint').innerHTML = 'There is no user with this username'
 			view.getTag('.hint').style.opacity = 1
+			return
+		}
+
+		if (res.status == 403) {
+			view.getTag('.hint').innerHTML = 'You entered wrong password'
+			view.getTag('.hint').style.opacity = 1
+			return
 		}
 		return res.json()
 	})
 	.then(res => {
 		token = res.token
 		localStorage.setItem('authToken', token)
-		fetch(URL+'user/', {headers: {'Authorization': `Bearer ${token}`}})
+		fetch(URL+'user/', {headers: {'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json'}})
 		.then(res => res.json())
 		.then(res => {
-			view.getTag('.desk-textarea').value = res.note
 			view.getTag('.authorization').style.display = 'none'
 			view.getTag('.username').value = ''
 			view.getTag('.password').value = ''
+			if (!res.note) {
+				view.getTag('.desk-textarea').value = ''
+				return
+			}
+			view.getTag('.desk-textarea').value = res.note
 		})
 	})
 }
@@ -149,11 +159,14 @@ view.getTag('.sign-in').onclick = () => {
 		return
 	}
 
-	const body = {username, password}
-	sendRequest('POST', URL+'signin/', {'Content-Type': 'application/json'}, body)
+	sendRequest('POST', URL+'signin/', {'Content-Type': 'application/json'}, {username, password})
 	.then(res => {
-		setTimeout(logIn(username, password), 2000)
-		return res
+		if (res.status == 400) {
+			view.getTag('.hint').innerHTML = 'There is already a person with this username'
+			view.getTag('.hint').style.opacity = 1
+			return
+		}
+		setTimeout(logIn({username, password}), 2000)
 	})
 }
 
