@@ -52,14 +52,8 @@ const view = {
 
 setInterval(view.updateTheDate, 500)
 
-view.getTag('.general-info').onclick = () => {
-	if (view.theme.currentTheme === 'LIGHT') {
-		view.theme.changeTheme(view.theme.themeConfigs['DARK'])
-		return
-	}
 
-	view.theme.changeTheme(view.theme.themeConfigs['LIGHT'])
-}
+console.log()
 
 view.theme.changeTheme(view.theme.themeConfigs['LIGHT'])
 
@@ -130,6 +124,15 @@ const logIn = (body) => {
 			view.getTag('.desk-textarea').value = res.note
 		})
 	})
+}
+
+view.getTag('.general-info').onclick = () => {
+	if (view.theme.currentTheme == 'LIGHT') {
+		view.theme.changeTheme(view.theme.themeConfigs['DARK'])
+		return
+	}
+
+	view.theme.changeTheme(view.theme.themeConfigs['LIGHT'])
 }
 
 view.getTag('.log-in').onclick = () => {
