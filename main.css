@@ -202,8 +202,9 @@ body {
 	background: #eeddcc;
 	position: absolute;
 	display: flex;
-	left: 115%;
-	width: 25vw;
+	top: -115%;
+	align-self: center;
+	width: 100%;
 	height: 100%;
 	font-size: 12px;
 	border-radius: .5em;
@@ -211,6 +212,7 @@ body {
 	box-sizing: border-box;
 	opacity: 0;
 	align-items: center;
+	text-align: center;
 }
 
 @media screen and (max-width: 1000px) {

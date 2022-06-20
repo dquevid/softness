@@ -100,7 +100,14 @@ fetch(URL+'user/', {headers: {'Authorization': `Bearer ${token}`}})
 
 const logIn = (body) => {
 	sendRequest('POST', URL+'login/', {'Content-Type': 'application/json'}, body)
-	.then(res => res.json())
+	.then(res => {
+		if (res.status == 404) {
+			console.log('404')
+			view.getTag('.hint').innerHTML = 'There is no user with this username'
+			view.getTag('.hint').style.opacity = 1
+		}
+		return res.json()
+	})
 	.then(res => {
 		token = res.token
 		localStorage.setItem('authToken', token)
@@ -120,7 +127,7 @@ view.getTag('.log-in').onclick = () => {
 	const password = view.getTag('.password').value
 
 	if (username.isEmpty || password.isEmpty || password.length < 4 || password.length > 16) {
-		view.getTag('.hint').innerHTML = 'Fields must be filled in. Your password length must be more then 4 and less then 16 characters'
+		view.getTag('.hint').innerHTML = 'Fields must be filled in. your password length must be more then 4 and less then 16 characters'
 		view.getTag('.hint').style.opacity = 1
 		return
 	}
@@ -144,7 +151,10 @@ view.getTag('.sign-in').onclick = () => {
 
 	const body = {username, password}
 	sendRequest('POST', URL+'signin/', {'Content-Type': 'application/json'}, body)
-	.then(res => {logIn(username, password)})
+	.then(res => {
+		setTimeout(logIn(username, password), 2000)
+		return res
+	})
 }
 
 view.getTag('.auth-input').onfocus = () => {
